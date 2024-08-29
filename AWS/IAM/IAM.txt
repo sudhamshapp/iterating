@@ -1,0 +1,59 @@
+IAM: Users and Groups
+we're going to create our users and assign them to the group
+Root account created by default, shouldn't be used or shared
+users are people within organization and can be grouped
+groups only contain users but not other groups
+users don't have to belong to a group, and user can belong to multiple groups
+why do we create users/groups(because we wanna allow them to use aws accounts)
+IAM Permissions: users/groups can be assigned json documents called policies
+These policies define the permissions of the users(on top of ec2:describe*, this implies if a user has this policy, they can do describe on top of ec2 instances)
+in AWS you apply the least privilege principle; don't give more permissions than a user needs
+Tags are everywhere in aws, they're optional but they allow you to give metadata to many of your resources
+IAM policies inheritances
+if fred is a user it has possibility to not belong to any group and we have possibility to create whats called and inline policy which has a policy that's only attached to a user, so that user could or couldn't belong to any group you can have inline policies for whatever you want
+IAM policy structure
+Version:policy lannguage version
+id:an identifier for the policy
+statement:one or more individual statements
+statements consists of 
+Sid:an identifier for the statement
+Effect:whether the statement allows or denies the access(allow/deny)
+principal:account/user/role to which the policy applied to
+Actions:list of actions the policy this policy allows or denies
+Resource:list of resources to which the action applied to
+condition:conditions for when this policy is in effect
+* in aws means anything
+MFA(password you know + security device you own)
+the password is stolen or hacked, the account isn't compromised
+
+To access AWS, we have three options
+AWS management console(protected by password + MFA)
+AWS CLI: protected by access keys(helps to connect aws sevices through terminal)
+AWS SDK:for code:protected by access keys(which is used whenever you want to call APIs from AWS from with in your application code)
+Access keys
+Access Key Id - username
+Secret Access Key - password
+AWS CLI that we're going to be using is built on top of aws sdk for python named boto
+aws configure prompsts the access key and secret access key
+mars@Sudhamshs-MacBook-Air iterating % aws iam list-users
+{
+    "Users": [
+        {
+            "Path": "/",
+            "UserName": "sudhamsh",
+            "UserId": "AIDAST6S7LGJYCP7UGNAE",
+            "Arn": "arn:aws:iam::180294211987:user/sudhamsh",
+            "CreateDate": "2024-08-29T07:55:20+00:00",
+            "PasswordLastUsed": "2024-08-29T08:00:57+00:00"
+        }
+    ]
+}
+
+IAM Roles for aws services
+some aws services need to perform actions on your behalf on your account
+To do so, we will assign permissions to AWS services with IAM Roles(so these IAM Role will be just like a user but they are intended to be not used by physical person, but instead they will be used by aws services)
+IAM security tools
+IAM credentials report
+IAM Access Advisor
+user>permissions>policies(json stuff)
+IAM policies - JSON document that define a set of permissions for making requests to aws services and can be used by IAM users/gorups/roles
