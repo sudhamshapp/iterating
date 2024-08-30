@@ -57,3 +57,8 @@ IAM credentials report
 IAM Access Advisor
 user>permissions>policies(json stuff)
 IAM policies - JSON document that define a set of permissions for making requests to aws services and can be used by IAM users/gorups/roles
+IAM User Groups can contain only IAM Users.
+
+AWS organizations
+Allows to manage multiple aws accounts
+consolidated billing across all accounts - single payment method

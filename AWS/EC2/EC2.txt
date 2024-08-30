@@ -1,0 +1,16 @@
+ec2 instance types
+security groups - They control how traffic is allowed into or out of our ec2 instances
+security groups only contains allow rules
+security groups rules can reference by IP or by security group(sg can reference each other)
+sg can be attached to multiple instances and a instance can have multiple security groups
+locked down to a region
+All inbound traffic is blocked by default
+All outbound traffic is authorized by default
+EBS volume is a network drive(i.e., not a physical drive) you can attach to your instances while they run
+it allows your instances to persist data, even after their termination
+EBS volume is bound to a specific AZ(or locked to a specific AZ), to move a volume across, you first need to snapashot it
+Multiple EBS volumes can be attached to a single instance and single ebs volume can be mounted on different instances(utpo 16 instances at a time)(except multi-attach io1/io2)
+snapshot - Backup of ebs volume at a point in time(volume>snapshot>volume)
+Not necessary to deatch volume to do snapshot, but recommend, can copy snapashot across AZs/Regions
+scalability(vertical scalability and Horizontal scalability) and high availability
+load balancers are servers that forward traffic to multiple servers downstream(ec2 instances)
