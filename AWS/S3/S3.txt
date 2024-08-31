@@ -2,9 +2,20 @@ S3 is one of the main building bocks of aws
 it's advertised as infinitely scaling storage
 Many websites use s3 as backbone
 aws services use s3 as an integration as well
-Buckets must have globally unique name across all regions all accounts
+Buckets must have globally unique name across all regions all accounts ever created in aws
 s3 allows people to store objects(files) in buckets (directories)
 Buckets are defined at region level
 The key is composed of prefix and object name
 Max object size is 5TB(5000GB)
 if uploading more than 5GB, must use multipart upload
+s3 pre-signed url - this url basically contains a signature that verifies i'm the one making the request, and therefore it has my credentials in it and so because my credentials are encoded in the url, then amazon s3 says, then sudhamsh is allowed to view his own object
+s3 versioning  - protect against unintended deletes(ability to restore a version and easy roll back to previous version)
+The files that are uploaded has a version id null in which versioning is disabled and check the delete markers as well
+S3 Replication - CRR/SRR - S3 Batch Replication for the retroactive stuff
+S3 Requester pays
+S3 Event Notifications
+S3 performance(Multi upload, Transfer Acceleration and Byte-Range fetches, S3 batch operations)
+storage lens - understand, analyze, and optimize storage across entire aws organizations
+SSE-S3
+SSE-KMS
+DSSE-S3
