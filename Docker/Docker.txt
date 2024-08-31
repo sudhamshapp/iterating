@@ -5,3 +5,13 @@ docker ps -a
 docker stop <conatinerid>
 docker rm <conatinerid>
 docker run -it <imageid> followed by ctrl+p then ctrl+q
+In the command docker run --name mynginx -d -p 8080:80 nginx, the -p option is used to map ports between the host machine and the container.
+
+Host Port (8080): This is the port on the host machine (the machine where Docker is running) that you want to expose to the outside world. In this case, port 8080 on the host machine is being used.
+
+Container Port (80): This is the port inside the Docker container that the application (in this case, NGINX) is listening on. For NGINX, the default port is 80.
+
+Summary:
+Host Port: 8080
+Container Port: 80
+When you access http://<your-server-ip>:8080, it is redirected to port 80 inside the container where NGINX is running. This allows you to access the NGINX service running inside the container from your host machine on port 8080.
