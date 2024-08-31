@@ -4,3 +4,4 @@ docker ps
 docker ps -a
 docker stop <conatinerid>
 docker rm <conatinerid>
+docker run -it <imageid> followed by ctrl+p then ctrl+q
