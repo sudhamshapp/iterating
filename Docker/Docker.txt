@@ -1,0 +1,6 @@
+hostport:containerport
+docker run --name <arbitary> -d <detached mode(run in the background)> -p <ec2instanceport/hostport:containerport> <imageidhere>
+docker ps
+docker ps -a
+docker stop <conatinerid>
+docker rm <conatinerid>
