@@ -1,1 +1,12 @@
-we would like our code resided in a repository and have it deployed on aws
+we would like our code resided in a repository and have it deployed onto aws
+Automatically
+The right way
+Making sure it's tested before being deployed
+with possibility to go into different stages (dev, test, staging, pre-prod and prod)
+with manual approval where needed
+version control: various changes that happened to code over time (and possibly roll back)
+Each pipeline stage can create artifacts
+Artifacts whatever is created outta pipeline
+Artifacts are stored in s3 bucket and passed on to next stage and this is how the next stage is going to be able to do what it needs to do 
+cloutrail can be used to audit AWS API calls
+buildspec.yml for codebuilsd and appspec.yml for codedeploy
