@@ -3,6 +3,7 @@ docker run --name <arbitary> -d <detached mode(run in the background)> -p <ec2in
 docker ps
 docker ps -a
 docker stop <conatinerid>
+docker start <conatinerid>
 docker rm <conatinerid>
 docker run -it <imageid> followed by ctrl+p then ctrl+q
 In the command docker run --name mynginx -d -p 8080:80 nginx, the -p option is used to map ports between the host machine and the container.
@@ -15,3 +16,9 @@ Summary:
 Host Port: 8080
 Container Port: 80
 When you access http://<your-server-ip>:8080, it is redirected to port 80 inside the container where NGINX is running. This allows you to access the NGINX service running inside the container from your host machine on port 8080.
+docker exec -it <container-id> /bin/bash- we can jump/ssh inside the container
+docker history <imageid/imagename>(we can see the layer info that is added overtime through this command)
+docker rmi <imagename>:<tag> or docker rmi <imageid>
+docker
+Dockerfile
+docker image
