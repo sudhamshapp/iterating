@@ -44,4 +44,133 @@ docker inspect image <imageid>
 
 Docker Networking
 container handling frontend(UI) application service and other container handling backend service(database)
-The activity whatever we're doing is get updated in the database which is backend
+The activity whatever we're doing does get updated in the database which is backend, if these frontend and backend containers wanna communicate each other a network should be established
+Three types of Networking comes in (Bridge, Host and None)
+root@ip-172-31-19-207:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-19-207:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-19-207:~# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+0a15f3ec525a   bridge    bridge    local
+302a7d0e04a9   host      host      local
+428a701adb02   none      null      local
+root@ip-172-31-19-207:~# 
+docker conatiner uses bridge network by default, if we explicitly connect to the host, then docker gets connected to the host network
+
+root@ip-172-31-19-207:~# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+7742bd2cf0cd   5ef79149e0ec   "/docker-entrypoint.…"   16 seconds ago   Up 15 seconds   0.0.0.0:8081->80/tcp, :::8081->80/tcp   awesome_ritchie
+5a7d63085310   a49fd2c04c02   "httpd-foreground"       3 minutes ago    Up 3 minutes    0.0.0.0:8080->80/tcp, :::8080->80/tcp   relaxed_euclid
+
+root@ip-172-31-19-207:~# docker network inspect bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "0a15f3ec525abef443e9a3a2cca80ac40d8baac8d902b1465b3e1e1704672b3c",
+        "Created": "2024-08-31T12:16:20.633322275Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "5a7d6308531031f159011424671916816a065778016883263c108c18f94c7390": {
+                "Name": "relaxed_euclid",
+                "EndpointID": "77d1307d8782f1c698ff6a47495da7830503d6d0d08753fb93bd80de58477fe9",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            },
+            "7742bd2cf0cd0b5c95ec958853cdec129769bb1ce7ae1237f771e5ab054e0b28": {
+                "Name": "awesome_ritchie",
+                "EndpointID": "ffba0e9624f2fd0d9f43176520b86bc358cd089ffee1cea1549a23de7c7015ee",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+root@ip-172-31-19-207:~# docker run -d --net host a49fd2c04c02
+36f73a654007a75c7ccbec9b963e565aa45b840ab87dace249fbad6632c696e8
+root@ip-172-31-19-207:~# docker ps
+CONTAINER ID   IMAGE          COMMAND              CREATED              STATUS              PORTS     NAMES
+36f73a654007   a49fd2c04c02   "httpd-foreground"   About a minute ago   Up About a minute             friendly_sammet
+root@ip-172-31-19-207:~# docker network inspect host
+[
+    {
+        "Name": "host",
+        "Id": "302a7d0e04a93d81087aa55de7a6dcb4e01e9c2e4ed0728e92b9ed017d885c7c",
+        "Created": "2024-08-31T12:16:20.598947107Z",
+        "Scope": "local",
+        "Driver": "host",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": []
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "36f73a654007a75c7ccbec9b963e565aa45b840ab87dace249fbad6632c696e8": {
+                "Name": "friendly_sammet",
+                "EndpointID": "1286851faaad1a1a5289b987cc55be26884857b3e2efd03c49fb12d04d3cd651",
+                "MacAddress": "",
+                "IPv4Address": "",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+1. Bridge Network Mode
+Default Mode: When you run a container without specifying a network mode, Docker uses the bridge mode by default.
+Isolation: Each container gets its own IP address on a virtual network created by Docker. Containers on the same bridge network can communicate with each other, but are isolated from the host and other networks unless configured otherwise.
+Networking: Docker creates a virtual bridge (docker0 on Linux) and assigns a private IP address to each container. You can map ports from the container to the host to allow external access.
+Use Case: Suitable for most scenarios where you want some isolation between containers and the host system but still need inter-container communication.
+2. Host Network Mode
+No Isolation: In host network mode, the container shares the host's network stack. This means the container doesn't get its own IP address but instead uses the host's IP address.
+Performance: Since there is no network isolation, this mode can offer performance benefits for network-intensive applications as it bypasses the virtual network layer.
+Port Conflicts: Since the container shares the host's network, you need to be careful about port conflicts between the host and other containers.
+Use Case: Useful when the container needs to interact with the network exactly like the host. For example, when running network utilities or when performance is critical.
+3. None Network Mode
+No Networking: In none mode, the container has no access to any network. It doesn't get an IP address and can't communicate with other containers or the outside world.
+Use Case: Ideal for cases where the container doesn't need any network access or when you want to explicitly manage networking, perhaps with custom network stacks or namespaces.
+
+Summary
+Bridge: Containers get their own IP addresses and are isolated from the host and other networks.
+Host: Containers share the host's IP address and network stack, removing network isolation.
+None: Containers have no network access at all.
