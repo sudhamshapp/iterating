@@ -1,12 +1,14 @@
 hostport:containerport
 docker engine/docker daemon
 container is started/created through docker image > docker image is built through dockerfile
+docker run command is mix of docker create + docker start
 docker build -t <imagename:tag> -f Dockerfile2204(the Dockerfile name could be arbitary) . (. represents in the current directory) and if the Dockerfile has a standard name we can make invoke like this docker build -t <imagename:tag>
 docker tag is basically useful for renaming docker tag <oldimagename:tag> <newimagename:tag>
 docker run --name <arbitary> -d <detached mode(run in the background)> -p <ec2instanceport/hostport:containerport> <imageidhere>
 docker ps
 docker ps -a
-docker stop <conatinerid>
+docker stop <conatinerid> - graceful shutdown
+docker kill <conatinerid> - forceful shutdown(when a conatiner is unresponsive)
 docker start <conatinerid>
 docker rm <conatinerid>
 docker run -it <imageid> followed by ctrl+p then ctrl+q
@@ -21,6 +23,7 @@ Host Port: 8080
 Container Port: 80
 When you access http://<your-server-ip>:8080, it is redirected to port 80 inside the container where NGINX is running. This allows you to access the NGINX service running inside the container from your host machine on port 8080.
 docker exec -it <container-id> /bin/bash- we can jump/ssh inside the container
+docker run -it <imageid> /bin/bash
 docker history <imageid/imagename>(we can see the layer info that is added overtime through this command)
 docker rmi <imagename>:<tag> or docker rmi <imageid>
 docker
@@ -35,3 +38,10 @@ example - docker save -o this-is-the-imagename-latest.tar this-is-the-imagename:
 This command loads a docker image from a tar archive into the docker daemon
 docker load -i <tarfilename>
 example - docker load -i this-is-the-imagename-latest.tar
+
+docker inspect image <imageid>
+
+
+Docker Networking
+container handling frontend(UI) application service and other container handling backend service(database)
+The activity whatever we're doing is get updated in the database which is backend
