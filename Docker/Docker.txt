@@ -1,4 +1,8 @@
 hostport:containerport
+docker engine/docker daemon
+container is started/created through docker image > docker image is built through dockerfile
+docker build -t <imagename:tag> -f Dockerfile2204(the Dockerfile name could be arbitary) . (. represents in the current directory) and if the Dockerfile has a standard name we can make invoke like this docker build -t <imagename:tag>
+docker tag is basically useful for renaming docker tag <oldimagename:tag> <newimagename:tag>
 docker run --name <arbitary> -d <detached mode(run in the background)> -p <ec2instanceport/hostport:containerport> <imageidhere>
 docker ps
 docker ps -a
@@ -21,4 +25,13 @@ docker history <imageid/imagename>(we can see the layer info that is added overt
 docker rmi <imagename>:<tag> or docker rmi <imageid>
 docker
 Dockerfile
-docker image
+docker images
+docker conatiner prune - removes all the stopped containers in a single shot
+
+This command saves a docker image to a tar archive
+docker save -o <tar_file> <imageid>
+example - docker save -o this-is-the-imagename-latest.tar this-is-the-imagename:latest
+
+This command loads a docker image from a tar archive into the docker daemon
+docker load -i <tarfilename>
+example - docker load -i this-is-the-imagename-latest.tar
