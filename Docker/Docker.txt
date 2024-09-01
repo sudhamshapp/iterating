@@ -174,3 +174,36 @@ Summary
 Bridge: Containers get their own IP addresses and are isolated from the host and other networks.
 Host: Containers share the host's IP address and network stack, removing network isolation.
 None: Containers have no network access at all.
+
+
+Developers write the application code and builds the code with respective build tools, then whatever the artifact comes in they gonna integrate in the image through ADD/COPY directive in Dockerfile, then it artifact gets executed in the runtime and exposed as an application.
+FROM
+ADD(urls and zip file automatically extracts and copies it)
+COPY
+
+volumes/storage
+when a multi container application is created, every container has a dedicated storage or both containers have a common storage
+root@ip-172-31-19-207:~# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+818b7a3430aa   501d0c1265a0   "/usr/sbin/apachectl…"   38 minutes ago   Up 38 minutes   0.0.0.0:8086->80/tcp, :::8086->80/tcp   musing_elgamal
+root@ip-172-31-19-207:~# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+818b7a3430aa   501d0c1265a0   "/usr/sbin/apachectl…"   38 minutes ago   Up 38 minutes   0.0.0.0:8086->80/tcp, :::8086->80/tcp   musing_elgamal
+root@ip-172-31-19-207:~# docker volume ls
+DRIVER    VOLUME NAME
+local     3ce32c6083b2bd7638a3228baca1518a1fef2495366225684a4285adfb978f27
+local     af49d2203974664973b7b8850f09e6dcef8779dae6e1b5f74bd8bb62a77722b2
+root@ip-172-31-19-207:~# docker volume inspect 3ce32c6083b2bd7638a3228baca1518a1fef2495366225684a4285adfb978f27
+[
+    {
+        "CreatedAt": "2024-09-01T16:13:52Z",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.volume.anonymous": ""
+        },
+        "Mountpoint": "/var/lib/docker/volumes/3ce32c6083b2bd7638a3228baca1518a1fef2495366225684a4285adfb978f27/_data",
+        "Name": "3ce32c6083b2bd7638a3228baca1518a1fef2495366225684a4285adfb978f27",
+        "Options": null,
+        "Scope": "local"
+    }
+]
