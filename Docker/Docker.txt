@@ -43,6 +43,7 @@ docker inspect image <imageid>
 
 
 Docker Networking
+docker network create <arbitary-network-name> - it creates a network for us
 container handling frontend(UI) application service and other container handling backend service(database)
 The activity whatever we're doing does get updated in the database which is backend, if these frontend and backend containers wanna communicate each other a network should be established
 Three types of Networking comes in (Bridge, Host and None)
@@ -231,3 +232,33 @@ root@ip-172-31-19-207:~# docker exec -it 27eeb9ebda15 /bin/bash
 root@ip-172-31-19-207:/# ls
 bin  boot  dev  etc  home  lib  lib32  lib64  libx32  mars  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 
+Multi conatiner app(Mongo DB, Mongo Express, redis and nginx web server - MERN(Backend - MongoDB, frontend - nginx webserver and redis for caching))
+
+docker run -dit -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password -e PWD=/ -v mongodb-data:/data/db --name mern_library_nginx_mongodb_1 --net library-mern-api mongo
+
+docker logs <imagenme/imageid>
+
+Docker Compose
+apt install docker-compose
+docker-compose --version
+docker-compose.yml > to run this > docker-compose up
+when we have a different filename
+docker-compose-file.yml > docker-compose -f docker-compose-file.yml up
+
+docker rm $(docker ps -a -q)
+docker rmi (docker images -q)
+docker volume prune
+docker network prune
+
+
+Docker troubleshooting
+docker logs <conatinerid/container-name>
+docker exec -it <conatinerid> <command> | docker exec -it <conatinerid> <ls/ls -ltra/hostname> | docker exec -it <conatinerid> sh//bin/bash/sh
+docker rename <oldcontainername><newcontainername>
+self healing mechanisms when a container is dead, it restarts the container
+docker inspect <conatinerid>
+
+Docker Swarm
+
+Entrypoint(should be run in the foreground, but not in the background which might kill the container)(decides the state of the container)once container is started, the immediate program to be executed
+mongo express is the UI for mongodb
