@@ -56,7 +56,7 @@ NETWORK ID     NAME      DRIVER    SCOPE
 302a7d0e04a9   host      host      local
 428a701adb02   none      null      local
 root@ip-172-31-19-207:~# 
-docker conatiner uses bridge network by default, if we explicitly connect to the host, then docker gets connected to the host network
+docker conatiner uses bridge network by default, if we explicitly opt --net host/none while creating the docker container from the image, then docker gets connected to the host/none respective network
 
 root@ip-172-31-19-207:~# docker ps
 CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                   NAMES
@@ -214,3 +214,20 @@ docker volume create <arbitaryvolumename>
 docker run -d --mount source=testvol1(reides on the host),destination=/data(resides on the container and this could be any arbiatry folder or existing folder) <imageid>
 docker run -d -v testvol1:/data <imageid>
 docker run -d -v "$(pwd)":/data <imageid>
+
+root@ip-172-31-19-207:~# docker volume ls
+DRIVER    VOLUME NAME
+local     3ce2e19a4a2ca450d7b26c7f33988395a7aa61283034279cf8cb760951e2902e
+local     239e9c9eb7577f6a90ba75f75544b0f77fa6ddc8a2e74b8bdd629b88ed883689
+local     adc0692e65f10886a8c7bb9d6c988581ee24744f5e2d025dd797b2006b8b33da
+local     testvol1
+local     testvol2
+root@ip-172-31-19-207:~# docker run -d -v testvol2:/mars --net host 501d0c1265a0
+27eeb9ebda155ea47488f3a5db93cc828458ca38ecde654fcee908e2f43f2940
+root@ip-172-31-19-207:~# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+27eeb9ebda15   501d0c1265a0   "/usr/sbin/apachectl…"   4 seconds ago   Up 3 seconds             zen_hertz
+root@ip-172-31-19-207:~# docker exec -it 27eeb9ebda15 /bin/bash
+root@ip-172-31-19-207:/# ls
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  mars  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
