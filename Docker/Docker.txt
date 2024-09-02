@@ -207,3 +207,10 @@ root@ip-172-31-19-207:~# docker volume inspect 3ce32c6083b2bd7638a3228baca1518a1
         "Scope": "local"
     }
 ]
+
+docker rm $(docker ps -a -q) - removes all the containers in the single shot
+docker volume rm <volumeid>
+docker volume create <arbitaryvolumename>
+docker run -d --mount source=testvol1(reides on the host),destination=/data(resides on the container and this could be any arbiatry folder or existing folder) <imageid>
+docker run -d -v testvol1:/data <imageid>
+docker run -d -v "$(pwd)":/data <imageid>
