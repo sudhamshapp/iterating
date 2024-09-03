@@ -171,3 +171,9 @@ kube-node-lease   Active   7h15m
 kube-public       Active   7h15m
 kube-system       Active   7h15m
 the last three are used for cluster functioning, cluster uses default namespace for deploying the workloads
+
+the lifecycle of a pod is completely different of lifecycle of volume, we're decoupling the storage from the pods
+
+if pv is a actual volume, to create that volume and attach the volume pvc comes
+
+when pvc is deleted, pv should also be deleted
