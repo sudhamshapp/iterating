@@ -32,6 +32,7 @@ kubectl exec mongo-express-7f7c6dff4-db7pv env
 kubectl get namespaces
 kubectl get all -n kube-system
 kubectl create namespace mars
+kubectl create ns mars
 kubectl get all --namespace mars
 kubectl get all -n mars
 
