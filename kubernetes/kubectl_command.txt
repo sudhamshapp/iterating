@@ -21,3 +21,13 @@ create the deployemnts of nginx and httpd and the deployment of ingress resource
 ingress resource enables the communication b/w ingress controller and actual deployments
 kubectl get ingress
 kubectl get service -n ingress-nginx
+
+kubectl get cm
+kubectl describe cm <nameoftheconfigmap>
+kubectl get sc
+
+kubectl exec <podname> <command>
+kubectl exec mongo-express-7f7c6dff4-db7pv env
+
+kubectl get namespaces
+

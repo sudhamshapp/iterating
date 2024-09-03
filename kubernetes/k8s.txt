@@ -150,4 +150,24 @@ nginx ingress controller
 
 if multiple webapps running on each cluster, for each service we can configure a Loadbalancer, but it's not cost effective to overcome this we use ingress controller
 
+Front end>Backend(business logic)>DB
+if we wanna manage server application usually we use client application, if we wanna manage a webserver we use browser
 
+configmaps and secrets
+secrets(opaque, docker registry, tls and service account)
+
+Namespace: splitting the cluster based on team specific, resource specific, access point of view(create the restrctions), divides the cluster virtually into logical groups
+in realtime there would be dev, prod and test applications, properly utilizing the cluster resources
+
+isolation
+resource allocation(quotas and limits)
+access control(RBAC)
+Administrator has the full privileges, jr admin/developer has some set of privileges access given on the cluster(role bindings(create the users(attach the policies)))
+Namespace has four default namespaces (default, kube-system, kube-public, and kube-node-lease)
+root@ip-172-31-12-22:~# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   7h15m
+kube-node-lease   Active   7h15m
+kube-public       Active   7h15m
+kube-system       Active   7h15m
+the last three are used for cluster functioning, cluster uses default namespace for deploying the workloads
