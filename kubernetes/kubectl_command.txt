@@ -38,3 +38,23 @@ kubectl get all -n mars
 
 kubectl get pv
 kubectl get pvc
+
+Headless service: won't have the ip, it only works on the DNS entries
+
+kubectl get daemonset
+
+kubectl get jobs
+
+kubectl logs <podname>
+
+kubectl get all -n kube-system - we have metric server in it which is helpful for hpa and cluster autoscaler
+
+kubectl get hpa
+
+kubectl get limitrange
+
+kubectl describe limitrange <limitrangename>
+
+if we configure the request and limit at namespace level it is stated as Resource Quota
+
+if we configure the request and limit at pod level it is stated as limit range
