@@ -11,3 +11,13 @@ kubectl delete -f . (deletes all the manifests in the current directory in a sin
 kubectl get service
 kubectl describe service <service-name> gives the stuff, when we speciifcally check for Endpoints attribute, it has the pod ips
 kubectl get nodes -o wide gives the ec2instance/workernodes public and priivate ips
+
+This complete setup is for nginx-ingress controller
+kubectl create namespace ingress-nginx
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
+kubectl get all -n ingress-nginx
+create the deployemnts of nginx and httpd and the deployment of ingress resource - this spits classic load balancer where we can nginx/httpd on single Loadbalancer url based on the path
+
+ingress resource enables the communication b/w ingress controller and actual deployments
+kubectl get ingress
+kubectl get service -n ingress-nginx
