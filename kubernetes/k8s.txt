@@ -1,0 +1,151 @@
+eksctl version
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+eksctl create cluster --name mars-eks --region us-east-2 --node-type t2.small - helps create a cluster
+
+eksctl delete cluster mars-eks --region us-east-2
+
+
+Access key
+AKIAST6S7LGJY63YOMF5
+Secret access key
+8HHh0mrK9oGHlqpXJC2532z7NaJrXYBT3Sa+RGaF
+
+pods>containers
+pod is wrapper around a container/s (has init container(which enables the monitoring or security to the main container))
+deployemnt - it has multiple pods, deployemnt is a wrapper on top of pods, it deploys multiple copies of similar pods on to the worker nodes for high availability and scalability
+deployemnts and replicasets works hand in hand, defines the desired state and deploys similar kinda of pods with the help of replicaset
+instructions given to master node, but the deployemnts being happened on worker nodes
+deployemnt internally relies on replicaset
+
+the manifest has four mandatory attributes
+apiVersion
+kind
+metadata
+spec
+
+manifest has the container and pod specification
+
+kubectl get all -A -helps fetches all the workloads on the cluster
+
+https://github.com/nextopsvideos/kubernetesyt.git - it has the manifest files
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get pods
+No resources found in default namespace.
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get deployments
+No resources found in default namespace.
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   64m
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get replicasets
+No resources found in default namespace.
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# 
+
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# ls
+sample_deploy.yml  sample_pod.yml  sample_rs.yml
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl apply -f sample_pod.yml 
+pod/my-pod created
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl delete -f sample_pod.yml 
+pod "my-pod" deleted
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# pwd
+/kubernetesyt/04_workload_components
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# 
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get pods
+NAME     READY   STATUS    RESTARTS   AGE
+my-pod   1/1     Running   0          17s
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# 
+
+kubectl describe pod <podname>
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get deploy
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+my-deployment   4/4     4            4           16s
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get pods
+NAME                            READY   STATUS    RESTARTS   AGE
+my-deployment-65f8c9c7b-pd79q   1/1     Running   0          39s
+my-deployment-65f8c9c7b-wlb2z   1/1     Running   0          39s
+my-deployment-65f8c9c7b-x9zvx   1/1     Running   0          39s
+my-deployment-65f8c9c7b-zvgxz   1/1     Running   0          39s
+my-pod                          1/1     Running   0          4m55s
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# 
+
+
+kubectl describe deploy <deployemnt-name>
+
+root@ip-172-31-12-22:~# kubectl get pods -w
+NAME                            READY   STATUS    RESTARTS   AGE
+my-deployment-65f8c9c7b-x9zvx   1/1     Running   0          15m
+my-deployment-65f8c9c7b-zvgxz   1/1     Running   0          15m
+my-pod                          1/1     Running   0          19m
+my-deployment-65f8c9c7b-x9zvx   1/1     Terminating   0          16m
+my-deployment-65f8c9c7b-wkwl9   0/1     Pending       0          0s
+my-deployment-65f8c9c7b-wkwl9   0/1     Pending       0          1s
+my-deployment-65f8c9c7b-wkwl9   0/1     ContainerCreating   0          1s
+my-deployment-65f8c9c7b-x9zvx   0/1     Terminating         0          16m
+my-deployment-65f8c9c7b-x9zvx   0/1     Terminating         0          16m
+my-deployment-65f8c9c7b-x9zvx   0/1     Terminating         0          16m
+my-deployment-65f8c9c7b-x9zvx   0/1     Terminating         0          16m
+my-deployment-65f8c9c7b-wkwl9   1/1     Running             0       
+
+
+whenever we are creating a deployment we must mention the replicas count this varies the difference from the pod
+
+services (ClusterIP, Nodeport and load balancer)
+
+service is an abstraction on top of pod/deployemnt/replicaset - consistent way to access and communicate with set of pods
+
+pod lifecycle isn't permananent, whatever the ip associated with pod also goes off
+if a pod wanna communicate with other pod or if a pod wanna to accessed by external world
+
+pod has containers, in which container has the os and application
+
+service only bind to the ip(won't have os and application), if we wanna reserve a speciifc ip address within the kubernetes
+whatever the request comes in it hits the service-ip>then it forwards the request to the pod or deployemnt
+service ip won't change
+cluster-ip gets allocated by kubernetes controller(within the cluster communication, we can't access it from the external world) - most secure service as it being not exposed to the external world(automatically get created by default)
+Node Port - it uses the public/priivate ips of worker nodes and exposes it to the external world(used only development and testing purposes)
+Load-balancer - cloud provision for us(ALB, NLB), ip address is allocated by cloud provider, it can accesses securely through external world
+
+For every service there would be an cluster ip creted by default, whether we opt for Nodeport/Loadbalancer
+request>nodeport(service)>ClusterIP>deployemnt
+request>Loadbalancer()service>ClusterIP>deployemnt
+
+root@ip-172-31-12-22:/kubernetesyt/04_workload_components# kubectl get pods -o wide
+NAME     READY   STATUS    RESTARTS   AGE   IP              NODE                                          NOMINATED NODE   READINESS GATES
+my-pod   1/1     Running   0          15s   192.168.26.32   ip-192-168-2-111.us-east-2.compute.internal   <none>           <none>
+
+root@ip-172-31-12-22:/kubernetesyt/05_Services# kubectl describe svc my-app-cip
+Name:              my-app-cip
+Namespace:         default
+Labels:            app=my-app-cip
+Annotations:       <none>
+Selector:          app=my-app-cip
+Type:              ClusterIP
+IP:                10.100.236.243
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         192.168.15.24:80,192.168.26.32:80,192.168.84.117:80
+Session Affinity:  None
+Events:            <none>
+root@ip-172-31-12-22:/kubernetesyt/05_Services# kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+my-deployment-cip-f969c8449-5qw7z   1/1     Running   0          3m36s
+my-deployment-cip-f969c8449-m29zx   1/1     Running   0          3m36s
+my-deployment-cip-f969c8449-tssdk   1/1     Running   0          3m36s
+root@ip-172-31-12-22:/kubernetesyt/05_Services# kubectl get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE     IP               NODE                                           NOMINATED NODE   READINESS GATES
+my-deployment-cip-f969c8449-5qw7z   1/1     Running   0          3m41s   192.168.84.117   ip-192-168-77-154.us-east-2.compute.internal   <none>           <none>
+my-deployment-cip-f969c8449-m29zx   1/1     Running   0          3m41s   192.168.26.32    ip-192-168-2-111.us-east-2.compute.internal    <none>           <none>
+my-deployment-cip-f969c8449-tssdk   1/1     Running   0          3m41s   192.168.15.24    ip-192-168-2-111.us-east-2.compute.internal    <none>           <none>
+
+
+root@ip-172-31-12-22:/kubernetesyt/05_Services# kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.100.0.1       <none>        443/TCP        3h42m
+my-app-cip   ClusterIP   10.100.236.243   <none>        80/TCP         10m
+my-app-np    NodePort    10.100.38.41     <none>        80:31304/TCP   53s
+root@ip-172-31-12-22:/kubernetesyt/05_Services# 
+
+

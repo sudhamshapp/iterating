@@ -1,0 +1,13 @@
+kubectl get pods
+kubectl get deploy
+kubectl describe pod <name-of-the-pod>
+kubectl describe deployment <name-of-the-deployment>
+kubectl apply -f <file.yml>
+kubectl delete -f <file.yml>
+kubectl edit deploy <deployemnt-name> - edits the manifest file on the fly
+kubectl get pods -w (the command waits for the status of the pod)
+kubectl get pods -o wide (it fetches the ip respective ip address of the as well)
+kubectl delete -f . (deletes all the manifests in the current directory in a single go)
+kubectl get service
+kubectl describe service <service-name> gives the stuff, when we speciifcally check for Endpoints attribute, it has the pod ips
+kubectl get nodes -o wide gives the ec2instance/workernodes public and priivate ips
