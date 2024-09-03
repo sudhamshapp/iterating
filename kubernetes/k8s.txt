@@ -5,10 +5,6 @@ eksctl create cluster --name mars-eks --region us-east-2 --node-type t2.small - 
 eksctl delete cluster mars-eks --region us-east-2
 
 
-Access key
-AKIAST6S7LGJY63YOMF5
-Secret access key
-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
 
 pods>containers
 pod is wrapper around a container/s (has init container(which enables the monitoring or security to the main container))
