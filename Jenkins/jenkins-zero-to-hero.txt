@@ -1,0 +1,6 @@
+Build the java application using maven
+sonarqube basically used for the image scanning part, will try to setup the sonar server locally and will send the report of code execution static code analysis to sonarqube
+then build the docker image and push it to the docker hub and using the shell scripts will directly update
+in the gitops approach we need to maintain a separate repo for manifest files or use the source code repo and create a new folder for manifest files inside the source code repo
+using the shell script/argocd image updater will automatically update the manifest repo
+using the manifest will automatically deploy into k8s through argocd

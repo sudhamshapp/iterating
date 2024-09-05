@@ -1,6 +1,8 @@
 eksctl version
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
-eksctl create cluster --name mars-eks --region us-east-2 --node-type t2.small - helps create a cluster
+
+This below command provision a eks cluster through eksctl helps create a cluster
+eksctl create cluster --name mars-eks --region us-east-2 --node-type t2.small 
 
 eksctl delete cluster mars-eks --region us-east-2
 
