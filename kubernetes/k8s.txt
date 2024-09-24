@@ -147,7 +147,7 @@ my-app-np    NodePort    10.100.38.41     <none>        80:31304/TCP   53s
 root@ip-172-31-12-22:/kubernetesyt/05_Services# 
 
 ingress(works as a layer7 Loadbalancer(path based routing or host based routing)), used for reverse proxy mechanism, if we want layer 7, functionality we need to opt the ingress, based on the end user requested url requested path it forwards to the respective deployment group
-ingress controller(brain of the ingress) has list of ingress resources
+ingress controller(brain of the ingress) has list of ingress resources > then we gonna have a load balncer based on the ingress resource
 nginx ingress controller
 
 if multiple webapps running on each cluster, for each service we can configure a Loadbalancer, but it's not cost effective to overcome this we use ingress controller
@@ -185,4 +185,8 @@ kubectl get jobs
 Deployment strategies
 Rolling updates(if we are using kubernetes by default we are using this strategy called rolling update)
 canary
-Blu green - these are supported through ingress controller
+Blue/green - these are supported through ingress controller
+To reduce the downtime we use during the upgrade of deployments we use deployment strategy
+
+Rolling update - we don't have control on top of this
+canary deployemnt - here the load balancer is the front facing forwarding 90% of v1 traffic and 10% of v2 traffic to the end-users(we can do it for 2-3 days, a week a month)(we have complete control on top of this)
