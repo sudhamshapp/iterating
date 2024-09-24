@@ -1,0 +1,11 @@
+terraform init - enables the connectivity b/w the terraform and cloud
+terraform validate - it validates the syntax
+terraform plan - it helps us know what are the resources that we are provisioning, think of like a dry run
+terraform apply - provision the infrastructure
+terraform destroy - destroy the infrastructure
+terraform fmt - formats the configuration file for redability and maintainability
+
+provider block - aws
+resource block - ec2, iam, vpc, s3, eks
+
+terraform providers list - https://registry.terraform.io/browse/providers

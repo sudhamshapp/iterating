@@ -1,0 +1,9 @@
+if we wanna rollout a new version of application to the prod environment or to the users, it's always easy and safe to rollback if you have own deployment strategy
+using ingress and ingress controller we can actually enable load balancing capability for your kubernetes cluster, load balancers that supported are(nginx, istio, HA proxy, traefik, linkerd)
+canary - instead of sending the complete traffic at a time to the new version of application, we are actually sending the minimal percentage of new version to the users, once it works great, we will increment the ratio and finally route the new version to the users
+- how can we achieve the above deployment strategy, along with old version of application, you also deploy the new version of application in the same k8s cluster
+instead of one ingress, we need to create ingress1 and ingress2 for the new application that we are trying to promote
+
+Rollout - it's the default model for k8s cluster
+
+Blue green - infrastructure costs would be very high, but the rollback happens very quick, just we need to switch the load balancer to version2, in case your version 2 isn't working, simply we should point our load balancer to version 1, just we need to switch the load balancer to v1 to v2 or v2 to v1

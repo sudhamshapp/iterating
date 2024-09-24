@@ -181,3 +181,8 @@ if pv is a actual volume, to create that volume and attach the volume pvc comes
 when pvc is deleted, pv should also be deleted
 
 kubectl get jobs
+
+Deployment strategies
+Rolling updates(if we are using kubernetes by default we are using this strategy called rolling update)
+canary
+Blu green - these are supported through ingress controller
